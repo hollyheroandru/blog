@@ -39,14 +39,30 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    @GetMapping("/blog/{id}")
-    public String getBlogDetails(Model model, @PathVariable(value = "id") long id) {
+    @GetMapping("/blog/{id}/likes")
+    public String setBlogLike(Model model, @PathVariable(value = "id") long id){
+        if (!postRepository.existsById(id)) {
+            return "redirect:/blog";
+        }
+        Post post = postRepository.findById(id).orElseThrow();
+        post.setLikes(post.getLikes() + 1);
+        postRepository.save(post);
+        return "redirect:/blog/"+ id;
+    }
+
+    @GetMapping("/blog/{id}/views")
+    public String upViews(Model model, @PathVariable(value = "id") long id) {
         if (!postRepository.existsById(id)) {
             return "redirect:/blog";
         }
         Post post = postRepository.findById(id).orElseThrow();
         post.setViews(post.getViews() + 1);
         postRepository.save(post);
+        return "redirect:/blog/" + id;
+    }
+
+    @GetMapping("/blog/{id}")
+    public String getBlogDetails(Model model, @PathVariable(value = "id") long id) {
         Optional<Post> optional = postRepository.findById(id);
         ArrayList<Post> result = new ArrayList<>();
         optional.ifPresent(result::add);

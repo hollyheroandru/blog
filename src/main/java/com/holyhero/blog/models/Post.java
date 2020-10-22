@@ -1,5 +1,8 @@
 package com.holyhero.blog.models;
 
+import lombok.Builder;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +18,17 @@ public class Post {
     private String title, anons, full_text;
     private long views;
 
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
+    private long likes;
+
+    @Builder(toBuilder = true)
     public Post(String title, String anons, String full_text) {
         this.title = title;
         this.anons = anons;
